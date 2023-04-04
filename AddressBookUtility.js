@@ -33,6 +33,26 @@ class Utility {
             console.log('No Contact found with Name: ', name);
         }
     }
+    FindContact() {
+        let name = readlineSync.question('Enter the First Name of the person to Find: ');
+        let index = addressBookArray.findIndex(x => x.firstName === name);
+        if (index !== -1) {
+            console.log("Contact Found");
+            console.log("Name: "+addressBookArray[index].firstName+" "+addressBookArray[index].lastName+"\nPhoneNumber: "+addressBookArray[index].phNo+"\nEMail:"+addressBookArray[index].email);
+        }
+        else
+            console.log("Contact not Found");
+    }
+    Filter(){
+        let city = readlineSync.question('Enter the city: ');
+        let cityArr=addressBookArray.filter(x=>x.city===city);
+        if(cityArr!=null){
+            console.log(cityArr);
+        }
+        else{
+            console.log("No Contact found");
+        }
+    }
     Update() {
         let name = readlineSync.question('Enter the First Name of the person to Update:');
         let index = addressBookArray.findIndex(x => x.firstName === name);

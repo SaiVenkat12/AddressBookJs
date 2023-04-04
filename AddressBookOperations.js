@@ -3,7 +3,7 @@ const utility = require('./AddressBookUtility');
 const AddressBookUtility = require('./AddressBookUtility');
 
 function Operations() {
-    const select = readlineSync.question('Enter the choice A)Add Contact B)Add Multiple Contacts D)Delete U)Update Contact d)Display \nEnter any other to Exit: ')
+    const select = readlineSync.question('Enter the choice A)Add Contact \nB)Add Multiple Contacts \nD)Delete \nU)Update Contact \nf)Find Contact \nd)Display \nF)Filter Contacts by City \nEnter any other to Exit: ')
     switch (select) {
         case 'A':
             utility.AddContacts();
@@ -23,6 +23,13 @@ function Operations() {
         case 'U':
             utility.Update();
             Operations();
+            break;
+        case 'f':
+            utility.FindContact();
+            Operations();
+            break;
+        case 'F':
+            utility.Filter();
             break;
         case 'd':
             utility.Display();
