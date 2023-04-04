@@ -1,15 +1,75 @@
 var readlineSync = require('readline-sync');
 let addressBookArray = new Array();
-class Utility {
 
+const nameValidation=RegExp("^[A-Z]{1}[a-z]{2,}$");
+const phValidation=RegExp("^[0-9]{2}[6-9]{1}[0-9]{9}$");
+const emailValidation=RegExp("^[a-zA-Z0-9]([.+-_]?[a-zA-z0-9])*@[0-9a-zA-Z]+.[a-zA-Z]{2,}([.]{0,1}[A-Za-z]{2,})$");
+const zipValidation=RegExp("^[0-9]{6}$");
+
+class Utility {
     AddContacts() {
+        
         let firstName = readlineSync.question('Enter the First Name: ');
+        let flag=true;
+        while(flag){
+            if(!nameValidation.test(firstName)){
+                console.log("---Name is Invalid!!!---");
+                firstName = readlineSync.question('Enter the Last Name: ');
+            }
+            else{
+                flag=false;
+            }
+        }
+
         let lastName = readlineSync.question('Enter the Last Name: ');
+        flag=true;
+        while(flag){
+            if(!nameValidation.test(lastName)){
+                console.log("---Name is Invalid!!!---");
+                lastName = readlineSync.question('Enter the Last Name: ');
+            }
+            else{
+                flag=false;
+            }
+        }
+
         let email = readlineSync.question('Enter the Email: ');
+        flag=true;
+        while(flag){
+            if(!emailValidation.test(email)){
+                console.log("---email is Invalid!!!---");
+                email = readlineSync.question('Enter the Email: ');
+            }
+            else{
+                flag=false;
+            }
+        }
+
         let phNo = readlineSync.question('Enter the Phone Number: ');
+        flag=true;
+        while(flag){
+            if(!phValidation.test(phNo)){
+                console.log("---Phone Number is Invalid!!!---");
+                phNo = readlineSync.question('Enter the Phone Number:  ');
+            }
+            else{
+                flag=false;
+            }
+        }
+
         let state = readlineSync.question('Enter the state: ');
         let city = readlineSync.question('Enter the city: ');
         let zip = readlineSync.question('Enter the ZipCode: ');
+        flag=true;
+        while(flag){
+            if(!zipValidation.test(zip)){
+                console.log("---Zip Code is Invalid!!!---");
+                zip = readlineSync.question('Enter the ZipCode: ');
+            }
+            else{
+                flag=false;
+            }
+        }
 
         let newContact = {
             firstName: firstName,
@@ -23,6 +83,7 @@ class Utility {
         addressBookArray.push(newContact);
         console.log("Contact Added!");
     }
+    
     DeleteContact() {
         let name = readlineSync.question('Enter the First Name of the person to delete:');
         let index = addressBookArray.findIndex(x => x.firstName === name);
