@@ -1,4 +1,5 @@
 var readlineSync = require('readline-sync');
+const fs = require('fs');
 let addressBookArray = new Array();
 
 const nameValidation=RegExp("^[A-Z]{1}[a-z]{2,}$");
@@ -81,6 +82,8 @@ class Utility {
             zip: zip,
         }
         addressBookArray.push(newContact);
+        let json = JSON.stringify(addressBookArray);
+        fs.writeFileSync('addressBookFile.json',json);
         console.log("Contact Added!");
     }
     
@@ -90,6 +93,8 @@ class Utility {
         if (index !== -1) {
             addressBookArray.splice(index, 1);
             console.log('Contact Deleted!');
+            let json = JSON.stringify(addressBookArray);
+            fs.writeFileSync('addressBookFile.json',json);
         } else {
             console.log('No Contact found with Name: ', name);
         }
@@ -150,6 +155,8 @@ class Utility {
                     break;
             }
             console.log("Contact Updated");
+            let json = JSON.stringify(addressBookArray);
+            fs.writeFileSync('addressBookFile.json',json);
         } else {
             console.log('No Contact found with Name: ', name);
         }

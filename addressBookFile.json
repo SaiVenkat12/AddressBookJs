@@ -1,0 +1,20 @@
+[
+    {
+        "firstName": "Sai",
+        "lastName": "Venkat",
+        "email": "asdj@ajdja.com",
+        "phNo": "919628175396",
+        "state": "ap",
+        "city": "nlr",
+        "zip": "524220"
+    },
+    {
+        "firstName": "Abc",
+        "lastName": "Klmn",
+        "email": "Ssak@DMKA.COM",
+        "phNo": "918901654321",
+        "state": "ts",
+        "city": "hyd",
+        "zip": "123239"
+    }
+]
