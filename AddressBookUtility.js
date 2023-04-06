@@ -1,21 +1,21 @@
 var readlineSync = require('readline-sync');
-const fs = require('fs');
+const file = require('fs');
 let addressBookArray = new Array();
 
 const nameValidation = RegExp("^[A-Z]{1}[a-z]{2,}$");
 const phValidation = RegExp("^[0-9]{2}[6-9]{1}[0-9]{9}$");
-const emailValidation = RegExp("^[a-zA-Z0-9]([.+-_]?[a-zA-z0-9])*@[0-9a-zA-Z]+.[a-zA-Z]{2,}([.]{0,1}[A-Za-z]{2,})$");
+const emailValidation = RegExp("^[a-zA-Z0-9]([.+-_]?[a-zA-z0-9])*@[0-9a-zA-Z]{2,}+.[a-zA-Z]{2,}([.]{0,1}[A-Za-z]{2,})$");
 const zipValidation = RegExp("^[0-9]{6}$");
 
 class Utility {
     AddContacts() {
-
+         addressBookArray = this.readfile(addressBookArray);
         let firstName = readlineSync.question('Enter the First Name: ');
         let flag = true;
         while (flag) {
             if (!nameValidation.test(firstName)) {
                 console.log("---Name is Invalid!!!---");
-                firstName = readlineSync.question('Enter the Last Name: ');
+                firstName = readlineSync.question('Enter the First Name: ');
             }
             else {
                 flag = false;
@@ -33,12 +33,11 @@ class Utility {
                 flag = false;
             }
         }
-        let index = addressBookArray.findIndex(x => x.firstName === firstName && x.lastName === lastName);
-            if (index != -1) {
-                console.log("----Contact already exists with this name-----");
-                return this.AddContacts()
-            }
-            
+        let n = this.Check(firstName, lastName);
+        if (n == true) {
+            return this.AddContacts();
+        }
+
         let email = readlineSync.question('Enter the Email: ');
         flag = true;
         while (flag) {
@@ -87,9 +86,26 @@ class Utility {
             zip: zip,
         }
         addressBookArray.push(newContact);
-        let json = JSON.stringify(addressBookArray);
-        fs.writeFileSync('addressBookFile.json', json);
+        this.writefile(addressBookArray);
         console.log("Contact Added!");
+    }
+    Check(firstName, lastName) {
+        let index = addressBookArray.findIndex(x => x.firstName === firstName && x.lastName === lastName);
+        if (index != -1) {
+            console.log("----Contact already exists with this name-----");
+            return true;
+        } else {
+            return false;
+        }
+    }
+    readfile(arr) {
+        let readData = file.readFileSync('addressBookFile.json');
+        arr = JSON.parse(readData);
+        return arr;
+    }
+    writefile(Arr) {
+        let json = JSON.stringify(Arr);
+        file.writeFileSync('addressBookFile.json', json);
     }
     DeleteContact() {
         let name = readlineSync.question('Enter the First Name of the person to delete:');
@@ -97,8 +113,7 @@ class Utility {
         if (index !== -1) {
             addressBookArray.splice(index, 1);
             console.log('Contact Deleted!');
-            let json = JSON.stringify(addressBookArray);
-            fs.writeFileSync('addressBookFile.json', json);
+            this.writefile(addressBookArray);
         } else {
             console.log('No Contact found with Name: ', name);
         }
@@ -159,13 +174,13 @@ class Utility {
                     break;
             }
             console.log("Contact Updated");
-            let json = JSON.stringify(addressBookArray);
-            fs.writeFileSync('addressBookFile.json', json);
+            this.writefile(addressBookArray);
         } else {
             console.log('No Contact found with Name: ', name);
         }
     }
     Display() {
+        //this.readfile(addressBookArray)
         addressBookArray.forEach(function (data) {
             console.log(" Name: " + data.firstName + " " + data.lastName + "\n EMAIL:  " + data.email + "\n PhoneNumber: " + data.phNo + "\n City: " + data.city + "\n State: " + data.state + "\n Zipcode: " + data.zip)
         });
