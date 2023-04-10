@@ -4,12 +4,15 @@ let addressBookArray = new Array();
 
 const nameValidation = RegExp("^[A-Z]{1}[a-z]{2,}$");
 const phValidation = RegExp("^[0-9]{2}[6-9]{1}[0-9]{9}$");
-const emailValidation = RegExp("^[a-zA-Z0-9]([.+-_]?[a-zA-z0-9])*@[0-9a-zA-Z]{2,}+.[a-zA-Z]{2,}([.]{0,1}[A-Za-z]{2,})$");
+const emailValidation = RegExp("^[a-zA-Z0-9]([.+-_]?[a-zA-z0-9])*@[0-9a-zA-Z]+.[a-zA-Z]{2,}([.]{0,1}[A-Za-z]{2,})$");
 const zipValidation = RegExp("^[0-9]{6}$");
 
 class Utility {
     AddContacts() {
-         addressBookArray = this.readfile(addressBookArray);
+        if (this.readfile(addressBookArray).length > 0) {
+            addressBookArray = this.readfile(addressBookArray);
+        }
+
         let firstName = readlineSync.question('Enter the First Name: ');
         let flag = true;
         while (flag) {
@@ -99,9 +102,35 @@ class Utility {
         }
     }
     readfile(arr) {
-        let readData = file.readFileSync('addressBookFile.json');
-        arr = JSON.parse(readData);
-        return arr;
+        // file.readFileSync('addressBookFile.json', (err, Data) => {
+        //    if (err) {
+        //         return err;
+        //    }
+        //      arr = JSON.parse(Data);
+        //      return arr;
+        //});
+
+        let Data = file.readFileSync('addressBookFile.json')
+        
+            arr = JSON.parse(Data);
+            return arr;
+        
+    }
+    DisplayFile() {
+        return new Promise((resolve, reject) => {
+            const data = this.readfile(addressBookArray)
+            if (data) {
+                console.log("Displaying All the Contacts");
+                console.log(data);
+                resolve(data);
+            }
+            else {
+                let err = {
+                    error: 'No Contacts exists'
+                }
+                reject(err)
+            }
+        })
     }
     writefile(Arr) {
         let json = JSON.stringify(Arr);
@@ -131,6 +160,7 @@ class Utility {
     Filter() {
         let city = readlineSync.question('Enter the city: ');
         let cityArr = addressBookArray.filter(x => x.city === city);
+
         if (cityArr != null) {
             console.log(cityArr);
         }
@@ -180,7 +210,7 @@ class Utility {
         }
     }
     Display() {
-        //this.readfile(addressBookArray)
+        addressBookArray = this.readfile(addressBookArray)
         addressBookArray.forEach(function (data) {
             console.log(" Name: " + data.firstName + " " + data.lastName + "\n EMAIL:  " + data.email + "\n PhoneNumber: " + data.phNo + "\n City: " + data.city + "\n State: " + data.state + "\n Zipcode: " + data.zip)
         });

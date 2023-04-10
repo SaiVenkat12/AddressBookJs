@@ -3,7 +3,7 @@ const utility = require('./AddressBookUtility');
 const AddressBookUtility = require('./AddressBookUtility');
 
 function Operations() {
-    const select = readlineSync.question('Enter the choice \nA)Add Contact \nB)Add Multiple Contacts \nD)Delete \nU)Update Contact \nf)Find Contact \nd)Display \nF)Filter Contacts by City \nEnter any other to Exit: ')
+    const select = readlineSync.question('Enter the choice \nA)Add Contact \nB)Add Multiple Contacts \nD)Delete \nU)Update Contact \nf)Find Contact \nd)Display Json File \nF)Filter Contacts by City \nEnter any other to Exit: ')
     switch (select) {
         case 'A':
             utility.AddContacts();
@@ -32,9 +32,17 @@ function Operations() {
             utility.Filter();
             break;
         case 'd':
-            utility.Display();
+            utility.DisplayFile().then((data)=>{
+                console.log(data);
+            }).catch((error)=>{
+                console.log(error);
+                return;
+            })
             Operations();
             break;
+        case 'o':
+            utility.Display();
+            Operations();
         default:
             console.log("Exit");
             break;
